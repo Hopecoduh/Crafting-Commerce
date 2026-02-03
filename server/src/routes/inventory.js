@@ -22,6 +22,23 @@ router.get("/materials", requireUser, async (req, res) => {
   res.json(result.rows);
 });
 
+// GET /api/inventory/items
+router.get("/items", requireUser, async (req, res) => {
+  const result = await db.query(
+    `
+    SELECT i.id, i.name, pi.quantity
+    FROM items i
+    LEFT JOIN player_items pi
+      ON pi.item_id = i.id
+     AND pi.player_id = $1
+    ORDER BY i.id
+    `,
+    [req.user.userId],
+  );
+
+  res.json({ ok: true, data: result.rows });
+});
+
 // POST /api/inventory/gather
 router.post("/gather", requireUser, async (req, res) => {
   const parsed = gatherSchema.safeParse(req.body);
