@@ -6,10 +6,15 @@ import authRouter from "./routes/auth.js";
 import inventoryRouter from "./routes/inventory.js";
 import craftingRouter from "./routes/crafting.js";
 import shopRouter from "./routes/shop.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.get("/boom", (req, res) => {
+  throw new Error("test error handler");
+});
 
 app.use("/api/auth", authRouter);
 
@@ -18,6 +23,8 @@ app.use("/api/inventory", inventoryRouter);
 app.use("/api/crafting", craftingRouter);
 
 app.use("/api/shop", shopRouter);
+
+app.use(errorHandler);
 
 app.get("/health", (req, res) => {
   res.json({ ok: true, message: "server running" });

@@ -1,6 +1,7 @@
 import express from "express";
 import { db } from "../db/client.js";
 import { requireUser } from "../middleware/requireUser.js";
+import { listItemSchema } from "../validation/shop.js";
 
 const router = express.Router();
 
@@ -32,19 +33,17 @@ router.get("/listings", async (req, res) => {
  * Auth: list an item for sale
  */
 router.post("/list", requireUser, async (req, res) => {
-  const { item_id, price, quantity } = req.body;
+  const parsed = listItemSchema.safeParse(req.body);
 
-  if (!item_id || !price || !quantity) {
+  if (!parsed.success) {
     return res.status(400).json({
-      error: "item_id, price, quantity required",
+      ok: false,
+      error: "invalid input",
+      details: parsed.error.format(),
     });
   }
 
-  if (price <= 0 || quantity <= 0) {
-    return res.status(400).json({
-      error: "price and quantity must be positive",
-    });
-  }
+  const { item_id, price, quantity } = parsed.data;
 
   try {
     await db.query("BEGIN");
@@ -79,7 +78,10 @@ router.post("/list", requireUser, async (req, res) => {
 
     await db.query("COMMIT");
 
-    res.status(201).json(listing.rows[0]);
+    res.status(201).json({
+      ok: true,
+      data: listing.rows[0],
+    });
   } catch (err) {
     await db.query("ROLLBACK");
     console.error(err);
@@ -134,7 +136,10 @@ router.post("/buy/:listingId", async (req, res) => {
 
     await db.query("COMMIT");
 
-    res.json({ success: true });
+    res.json({
+      ok: true,
+      data: { purchased: true },
+    });
   } catch (err) {
     await db.query("ROLLBACK");
     console.error(err);

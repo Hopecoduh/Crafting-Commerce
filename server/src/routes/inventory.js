@@ -1,6 +1,7 @@
 import express from "express";
 import { db } from "../db/client.js";
 import { requireUser } from "../middleware/requireUser.js";
+import { gatherSchema } from "../validation/inventory.js";
 
 const router = express.Router();
 
@@ -23,11 +24,17 @@ router.get("/materials", requireUser, async (req, res) => {
 
 // POST /api/inventory/gather
 router.post("/gather", requireUser, async (req, res) => {
-  const { material_id } = req.body;
+  const parsed = gatherSchema.safeParse(req.body);
 
-  if (!material_id) {
-    return res.status(400).json({ error: "material_id required" });
+  if (!parsed.success) {
+    return res.status(400).json({
+      ok: false,
+      error: "invalid input",
+      details: parsed.error.format(),
+    });
   }
+
+  const { material_id } = parsed.data;
 
   const result = await db.query(
     `
@@ -40,7 +47,10 @@ router.post("/gather", requireUser, async (req, res) => {
     [req.user.userId, material_id],
   );
 
-  res.json(result.rows[0]);
+  res.json({
+    ok: true,
+    data: result.rows[0],
+  });
 });
 
 export default router;

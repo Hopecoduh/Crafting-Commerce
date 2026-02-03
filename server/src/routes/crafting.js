@@ -1,12 +1,12 @@
 import express from "express";
 import { db } from "../db/client.js";
 import { requireUser } from "../middleware/requireUser.js";
+import { craftSchema } from "../validation/crafting.js";
 
 const router = express.Router();
 
-/**
- * GET /api/crafting/recipes
- */
+//GET /api/crafting/recipes
+
 router.get("/recipes", requireUser, async (req, res) => {
   const result = await db.query(`
     SELECT
@@ -32,12 +32,20 @@ router.get("/recipes", requireUser, async (req, res) => {
   res.json(result.rows);
 });
 
-/**
- * POST /api/crafting/craft
- */
+// POST /api/crafting/craft
+
 router.post("/craft", requireUser, async (req, res) => {
-  const { recipe_id } = req.body;
-  if (!recipe_id) return res.status(400).json({ error: "recipe_id required" });
+  const parsed = craftSchema.safeParse(req.body);
+
+  if (!parsed.success) {
+    return res.status(400).json({
+      ok: false,
+      error: "invalid input",
+      details: parsed.error.format(),
+    });
+  }
+
+  const { recipe_id } = parsed.data;
 
   const ingredients = await db.query(
     `
@@ -100,7 +108,10 @@ router.post("/craft", requireUser, async (req, res) => {
     [req.user.userId, item.rows[0].item_id],
   );
 
-  res.json(result.rows[0]);
+  res.json({
+    ok: true,
+    data: result.rows[0],
+  });
 });
 
 export default router;
