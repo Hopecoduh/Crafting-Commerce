@@ -53,20 +53,27 @@ router.post("/gather", requireUser, async (req, res) => {
 
   const { material_id } = parsed.data;
 
+  // random 1–20
+  const gained = Math.floor(Math.random() * 20) + 1;
+
   const result = await db.query(
     `
     INSERT INTO player_materials (player_id, material_id, quantity)
-    VALUES ($1, $2, 1)
+    VALUES ($1, $2, $3)
     ON CONFLICT (player_id, material_id)
-    DO UPDATE SET quantity = player_materials.quantity + 1
+    DO UPDATE SET quantity = player_materials.quantity + $3
     RETURNING *
     `,
-    [req.user.userId, material_id],
+    [req.user.userId, material_id, gained],
   );
 
   res.json({
     ok: true,
-    data: result.rows[0],
+    data: {
+      gained,
+      material_id,
+      row: result.rows[0],
+    },
   });
 });
 

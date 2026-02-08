@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.js";
 import inventoryRouter from "./routes/inventory.js";
 import craftingRouter from "./routes/crafting.js";
 import shopRouter from "./routes/shop.js";
+import gatherRouter from "./routes/gather.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -17,12 +18,12 @@ app.get("/boom", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-
 app.use("/api/inventory", inventoryRouter);
-
 app.use("/api/crafting", craftingRouter);
-
 app.use("/api/shop", shopRouter);
+
+// ✅ new action routes
+app.use("/api/gather", gatherRouter);
 
 app.use(errorHandler);
 
