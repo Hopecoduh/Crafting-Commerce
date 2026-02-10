@@ -94,7 +94,7 @@ router.post("/mine", requireUser, async (req, res) => {
 router.post("/plants", requireUser, async (req, res) => {
   const drops = [];
 
-  // always some plant matter (your “gather plants” should feed crafting)
+  // always some plant matter
   addDrop(drops, "Plant Matter", randInt(1, 4));
 
   // roll actual plants

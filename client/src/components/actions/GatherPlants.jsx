@@ -25,7 +25,7 @@ export default function GatherPlants({ onLoot }) {
       onLoot?.(data);
     } catch (e) {
       setError(e.message || "Gather plants failed");
-      stop(); // cancel timer on error
+      stop(); // cancels timer on error
     } finally {
       setLoading(false);
       stop();

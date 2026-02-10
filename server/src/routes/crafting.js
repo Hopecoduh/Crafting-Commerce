@@ -5,12 +5,12 @@ import { craftSchema } from "../validation/crafting.js";
 
 const router = express.Router();
 
-//GET /api/crafting/recipes
-
+// GET /api/crafting/recipes
 router.get("/recipes", requireUser, async (req, res) => {
   const result = await db.query(`
     SELECT
       r.id as recipe_id,
+      r.seconds as seconds,
       i.id as item_id,
       i.name as item_name,
       i.base_price,
@@ -20,12 +20,13 @@ router.get("/recipes", requireUser, async (req, res) => {
           'material_name', m.name,
           'quantity', ri.quantity
         )
+        ORDER BY m.id
       ) as ingredients
     FROM recipes r
     JOIN items i ON r.item_id = i.id
     JOIN recipe_ingredients ri ON ri.recipe_id = r.id
     JOIN materials m ON ri.material_id = m.id
-    GROUP BY r.id, i.id
+    GROUP BY r.id, r.seconds, i.id
     ORDER BY r.id
   `);
 
@@ -92,8 +93,11 @@ router.post("/craft", requireUser, async (req, res) => {
   // give item
   const item = await db.query(
     `
-    SELECT item_id FROM recipes WHERE id = $1
-    `,
+  SELECT r.item_id, i.name as item_name, r.seconds
+  FROM recipes r
+  JOIN items i ON i.id = r.item_id
+  WHERE r.id = $1
+  `,
     [recipe_id],
   );
 

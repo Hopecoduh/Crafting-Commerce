@@ -26,7 +26,7 @@ export default function Mining({ onLoot }) {
       onLoot?.(data);
     } catch (e) {
       setError(e.message || "Mine failed");
-      stop(); // optional: cancel timer on error
+      stop(); // cancels timer on error
     } finally {
       setLoading(false);
       stop();
