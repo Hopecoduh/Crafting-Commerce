@@ -1,6 +1,10 @@
 // client/src/App.jsx
 import { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import { api, setToken, clearToken, getToken } from "./api";
+import ShopGrid from "./pages/ShopGrid";
+import ShopDetail from "./pages/ShopDetail";
+import Inventory from "./pages/Inventory";
 
 import ActionBar from "./components/actions/ActionBar";
 import CraftingBar from "./components/crafting/CraftingBar";
@@ -165,86 +169,32 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h2>Welcome, {me.user?.display_name ?? "Player"}</h2>
-        <button onClick={logout}>Logout</button>
-      </div>
-
-      <p>
-        Coins: <b>{me.player?.coins ?? 0}</b>
-      </p>
-
-      {error && (
-        <div style={{ color: "crimson", marginBottom: 12 }}>{error}</div>
-      )}
-
-      <hr />
-
-      {/* ACTIONS */}
-      <h3>Actions</h3>
-      <ActionBar onLoot={refreshInventoryOnly} />
-
-      <hr />
-
-      {/* CRAFTING */}
-      <h3>Crafting</h3>
-      <CraftingBar
-        recipes={recipes}
-        materials={materials}
-        onCraft={async (recipeId) => {
-          try {
-            await api.craft(recipeId);
-            setMaterials(await api.materials());
-            setItems(await api.items());
-          } catch (e) {
-            setError(e.message || "Craft failed");
-            throw e;
-          }
-        }}
-      />
-
-      <hr />
-
-      {/* MATERIALS */}
-      <h3>Materials</h3>
-      {materials.map((m) => (
-        <div key={m.id}>
-          {m.name} — {m.quantity ?? 0}
-        </div>
-      ))}
-
-      {/* ITEMS */}
-      <h3 style={{ marginTop: 24 }}>Items</h3>
-      {items.map((it) => (
-        <div key={it.id} style={{ marginBottom: 10 }}>
-          <b>{it.name}</b> — Qty: {it.quantity ?? 0}
-          <div>
-            <input
-              type="number"
-              placeholder="price"
-              value={stockInputs[it.id]?.price || ""}
-              onChange={(e) =>
-                setStockInputs((p) => ({
-                  ...p,
-                  [it.id]: { ...p[it.id], price: Number(e.target.value) },
-                }))
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Inventory
+            me={me}
+            materials={materials}
+            items={items}
+            recipes={recipes}
+            onLoot={refreshInventoryOnly}
+            onCraft={async (recipeId) => {
+              try {
+                await api.craft(recipeId);
+                setMaterials(await api.materials());
+                setItems(await api.items());
+              } catch (e) {
+                setError(e.message || "Craft failed");
+                throw e;
               }
-            />
-            <button onClick={() => stockStore(it)}>List</button>
-          </div>
-        </div>
-      ))}
-
-      {/* MY STORE */}
-      <h3 style={{ marginTop: 24 }}>My Store</h3>
-      {myListings.length === 0 && <div>Store empty</div>}
-
-      {myListings.map((l) => (
-        <div key={l.id}>
-          {l.item_name} — {l.quantity} @ {l.price}
-        </div>
-      ))}
-    </div>
+            }}
+          />
+        }
+      />
+      <Route path="/npc-shops" element={<ShopGrid me={me} />} />
+      <Route path="/npc-shops/:id" element={<ShopDetail />} />
+      <Route path="*" element={<div>Route not found</div>} />
+    </Routes>
   );
 }

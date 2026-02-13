@@ -34,7 +34,7 @@ export default function Mining({ onLoot }) {
   }
 
   return (
-    <div style={{ border: "1px solid #333", padding: 12, borderRadius: 10 }}>
+    <div className="p-4 rounded-xl border border-slate-800/50 bg-slate-900/40 text-slate-200">
       <button onClick={handleMine} disabled={loading || running}>
         {running
           ? `Mining… ${remainingSec}s`
