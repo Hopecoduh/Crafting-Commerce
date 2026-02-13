@@ -139,4 +139,24 @@ export const api = {
     request(`/api/shop/unlist/${listingId}`, {
       method: "POST",
     }),
+
+  npcShops: async () => {
+    return request("/api/npc-shops");
+  },
+
+  npcShopStock: async (shopId) => {
+    return request(`/api/npc-shops/${shopId}/stock`);
+  },
+
+  npcBuy: async (shopId, itemId, quantity) =>
+    request(`/api/npc-shops/${shopId}/buy`, {
+      method: "POST",
+      body: JSON.stringify({ item_id: itemId, quantity }),
+    }),
+
+  npcSell: async (shopId, itemId, quantity) =>
+    request(`/api/npc-shops/${shopId}/sell`, {
+      method: "POST",
+      body: JSON.stringify({ item_id: itemId, quantity }),
+    }),
 };

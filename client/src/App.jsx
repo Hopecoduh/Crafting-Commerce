@@ -191,6 +191,7 @@ export default function App() {
       <h3>Crafting</h3>
       <CraftingBar
         recipes={recipes}
+        materials={materials}
         onCraft={async (recipeId) => {
           try {
             await api.craft(recipeId);

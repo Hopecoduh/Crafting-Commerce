@@ -1,7 +1,16 @@
 // client/src/components/crafting/RecipeList.jsx
 import { useEffect, useMemo, useState } from "react";
 
-export default function RecipeList({ title, recipes, onCraft }) {
+function hasEnoughMaterials(recipe, materials) {
+  if (!materials?.length) return false;
+
+  return recipe.ingredients.every((ing) => {
+    const owned = materials.find((m) => m.id === ing.material_id);
+    return owned && owned.quantity >= ing.quantity;
+  });
+}
+
+export default function RecipeList({ title, recipes, materials, onCraft }) {
   const [timers, setTimers] = useState({}); // { [recipeId]: endsAtMs }
   const [, forceTick] = useState(0);
 
@@ -57,6 +66,7 @@ export default function RecipeList({ title, recipes, onCraft }) {
         {recipes.map((r) => {
           const running = isRunning(r.recipe_id);
           const remain = remainingSec(r.recipe_id);
+          const canCraft = hasEnoughMaterials(r, materials);
 
           return (
             <div
@@ -82,10 +92,11 @@ export default function RecipeList({ title, recipes, onCraft }) {
                 </div>
 
                 <button
-                  disabled={running}
+                  disabled={running || !canCraft}
                   onClick={async () => {
-                    const seconds = r.seconds ?? 60;
+                    if (!canCraft) return;
 
+                    const seconds = r.seconds ?? 60;
                     startTimer(r.recipe_id, seconds);
 
                     try {
@@ -94,6 +105,9 @@ export default function RecipeList({ title, recipes, onCraft }) {
                     } finally {
                       clearTimer(r.recipe_id);
                     }
+                  }}
+                  style={{
+                    opacity: running || !canCraft ? 0.5 : 1,
                   }}
                 >
                   {running ? `Crafting… ${remain}s` : "Craft"}

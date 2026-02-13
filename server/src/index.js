@@ -8,6 +8,7 @@ import craftingRouter from "./routes/crafting.js";
 import shopRouter from "./routes/shop.js";
 import gatherRouter from "./routes/gather.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import npcShopsRouter from "./routes/npcShops.js";
 
 const app = express();
 app.use(cors());
@@ -21,8 +22,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/inventory", inventoryRouter);
 app.use("/api/crafting", craftingRouter);
 app.use("/api/shop", shopRouter);
+app.use("/api/npc-shops", npcShopsRouter);
 
-// ✅ new action routes
 app.use("/api/gather", gatherRouter);
 
 app.use(errorHandler);

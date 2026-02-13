@@ -14,6 +14,7 @@ RESTART IDENTITY CASCADE;
 -- =========================================================
 -- MATERIALS (gathered + processed ingredients)
 -- =========================================================
+
 INSERT INTO materials (name, base_value) VALUES
   -- Raw / gathered
   ('Wood Log', 1),
@@ -142,6 +143,7 @@ INSERT INTO items (name, base_price) VALUES
 -- =========================================================
 -- RECIPES (1 recipe per item)
 -- =========================================================
+
 INSERT INTO recipes (item_id) VALUES
   -- Intermediates
   ((SELECT id FROM items WHERE name = 'Plant Matter')),
@@ -205,7 +207,7 @@ INSERT INTO recipes (item_id) VALUES
 -- =========================================================
 
 -- ---------- Plant chain ----------
--- Plant Matter: 2 Berry -> 1 Plant Matter  (represents processing gathered plants)
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -214,7 +216,6 @@ VALUES
   2
 );
 
--- Fiber: 3 Plant Matter -> 1 Fiber
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -224,7 +225,7 @@ VALUES
 );
 
 -- ---------- Basic processed ----------
--- Stick Bundle: 1 Wood Log -> Stick Bundle
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -233,7 +234,6 @@ VALUES
   1
 );
 
--- Plank Board: 1 Wood Log -> Plank Board
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -242,7 +242,6 @@ VALUES
   1
 );
 
--- Stone Brick: 3 Stone -> Stone Brick
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -251,7 +250,6 @@ VALUES
   3
 );
 
--- Glass Bottle: 3 Sand -> Glass Bottle
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -260,7 +258,6 @@ VALUES
   3
 );
 
--- Rope: 3 Fiber + 1 Stick -> Rope
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -274,7 +271,6 @@ VALUES
   1
 );
 
--- Cloth: 4 Fiber + 1 Wool -> Cloth
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -288,7 +284,6 @@ VALUES
   1
 );
 
--- Leather: 2 Hide -> Leather
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -297,7 +292,6 @@ VALUES
   2
 );
 
--- Leather Strips: 1 Leather -> Leather Strips
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -306,7 +300,6 @@ VALUES
   1
 );
 
--- Flour: 1 Wheat -> Flour
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -315,7 +308,6 @@ VALUES
   1
 );
 
--- Sugar: 1 Sugarcane -> Sugar
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -325,7 +317,7 @@ VALUES
 );
 
 -- ---------- Ingots (crafted, then used as ingredients) ----------
--- Copper Ingot: 2 Copper Ore + 1 Coal
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -334,7 +326,6 @@ VALUES
   2
 );
 
--- Tin Ingot: 2 Tin Ore
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -343,7 +334,6 @@ VALUES
   2
 );
 
--- Bronze Ingot: 1 Copper Ingot + 1 Tin Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -357,7 +347,6 @@ VALUES
   1
 );
 
--- Iron Ingot: 2 Iron Ore
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -366,7 +355,6 @@ VALUES
   2
 );
 
--- Steel Ingot: 2 Iron Ingot + 1 Coal
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -380,7 +368,6 @@ VALUES
   1
 );
 
--- Silver Ingot: 2 Silver Ore
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -389,7 +376,6 @@ VALUES
   2
 );
 
--- Gold Ingot: 2 Gold Ore
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -399,7 +385,7 @@ VALUES
 );
 
 -- ---------- Weapons / Gear ----------
--- Bronze Axe: 2 Bronze Ingot + 1 Stick + 1 Rope
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -418,7 +404,6 @@ VALUES
   1
 );
 
--- Iron Axe: 2 Iron Ingot + 1 Stick + 1 Rope
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -437,7 +422,6 @@ VALUES
   1
 );
 
--- Steel Axe: 2 Steel Ingot + 1 Stick + 1 Rope
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -456,7 +440,6 @@ VALUES
   1
 );
 
--- Bronze Sword: 3 Bronze Ingot + 2 Leather Strips
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -470,7 +453,6 @@ VALUES
   2
 );
 
--- Iron Sword: 3 Iron Ingot + 2 Leather Strips
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -484,7 +466,6 @@ VALUES
   2
 );
 
--- Steel Sword: 3 Steel Ingot + 2 Leather Strips
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -498,7 +479,6 @@ VALUES
   2
 );
 
--- Bow: 2 Stick + 1 Rope
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -512,7 +492,6 @@ VALUES
   1
 );
 
--- Arrow Bundle: 2 Stick + 2 Feather + 1 Flint
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -531,7 +510,6 @@ VALUES
   1
 );
 
--- Wooden Shield: 5 Plank + 1 Leather
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -545,7 +523,6 @@ VALUES
   1
 );
 
--- Bronze Shield: 5 Plank + 2 Leather + 3 Bronze Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -564,7 +541,6 @@ VALUES
   3
 );
 
--- Iron Shield: 5 Plank + 2 Leather + 3 Iron Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -583,7 +559,6 @@ VALUES
   3
 );
 
--- Steel Shield: 5 Plank + 2 Leather + 3 Steel Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -603,7 +578,7 @@ VALUES
 );
 
 -- ---------- Food ----------
--- Water Bottle: 1 Empty Glass Bottle + 1 Water
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -617,7 +592,6 @@ VALUES
   1
 );
 
--- Milk Bottle: 1 Empty Glass Bottle + 1 Milk
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -631,7 +605,6 @@ VALUES
   1
 );
 
--- Cooked Meat: 1 Raw Meat + 1 Herbs
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -645,7 +618,6 @@ VALUES
   1
 );
 
--- Cooked Fish: 1 Raw Fish + 1 Herbs
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -659,7 +631,6 @@ VALUES
   1
 );
 
--- Berry Jam: 2 Berry + 1 Sugar
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -673,7 +644,6 @@ VALUES
   1
 );
 
--- Bread: 3 Flour + 1 Water Bottle
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -687,7 +657,6 @@ VALUES
   1
 );
 
--- Vegetable Soup: 1 Carrot + 1 Potato + 1 Water Bottle + 1 Herbs
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -711,7 +680,6 @@ VALUES
   1
 );
 
--- Meat Stew: 1 Raw Meat + 1 Potato + 1 Water Bottle + 1 Herbs
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -735,7 +703,6 @@ VALUES
   1
 );
 
--- Meat Pie: 1 Raw Meat + 2 Flour + 1 Milk Bottle + 1 Egg
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -759,7 +726,6 @@ VALUES
   1
 );
 
--- Milk Bottle: 1 Glass Bottle + 1 Milk
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -773,7 +739,6 @@ VALUES
   1
 );
 
--- Juice: 2 Berry + 1 Water Bottle
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -787,7 +752,6 @@ VALUES
   1
 );
 
--- Ale: 3 Wheat + 1 Water Bottle + 1 Sugar
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
@@ -807,55 +771,52 @@ VALUES
 );
 
 -- ---------- Trade goods ----------
--- Simple Jewelry: 1 Silver Ingot + 1 Cloth
+
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Simple Jewelry'),
   (SELECT id FROM materials WHERE name='Silver Ingot'),
-  1
+  10
 ),
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Simple Jewelry'),
   (SELECT id FROM materials WHERE name='Cloth'),
-  1
+  20
 );
 
--- Fine Jewelry: 1 Gold Ingot + 1 Silver Ingot + 1 Cloth
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Fine Jewelry'),
   (SELECT id FROM materials WHERE name='Gold Ingot'),
-  1
+  20
 ),
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Fine Jewelry'),
   (SELECT id FROM materials WHERE name='Silver Ingot'),
-  1
+  10
 ),
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Fine Jewelry'),
   (SELECT id FROM materials WHERE name='Cloth'),
-  1
+  40
 );
 
--- Gold Coin: 1 Gold Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Gold Coin'),
   (SELECT id FROM materials WHERE name='Gold Ingot'),
-  1
+  10
 );
 
--- Silver Coin: 1 Silver Ingot
 INSERT INTO recipe_ingredients (recipe_id, material_id, quantity)
 VALUES
 (
   (SELECT r.id FROM recipes r JOIN items i ON r.item_id=i.id WHERE i.name='Silver Coin'),
   (SELECT id FROM materials WHERE name='Silver Ingot'),
-  1
+  10
 );
 
 COMMIT;

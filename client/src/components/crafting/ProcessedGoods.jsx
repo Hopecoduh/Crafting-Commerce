@@ -2,9 +2,14 @@
 import RecipeList from "./RecipeList";
 import { filterRecipesByCategory } from "../../data/recipeCategories";
 
-export default function ProcessedGoods({ recipes, onCraft }) {
+export default function ProcessedGoods({ recipes, materials, onCraft }) {
   const list = filterRecipesByCategory(recipes, "PROCESSED");
   return (
-    <RecipeList title="Processed Goods" recipes={list} onCraft={onCraft} />
+    <RecipeList
+      title="Processed Goods"
+      recipes={list}
+      materials={materials}
+      onCraft={onCraft}
+    />
   );
 }
