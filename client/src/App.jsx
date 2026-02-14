@@ -5,16 +5,13 @@ import { api, setToken, clearToken, getToken } from "./api";
 import ShopGrid from "./pages/ShopGrid";
 import ShopDetail from "./pages/ShopDetail";
 import Inventory from "./pages/Inventory";
+import AuthPage from "./pages/AuthPage";
 
 import ActionBar from "./components/actions/ActionBar";
 import CraftingBar from "./components/crafting/CraftingBar";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [authMode, setAuthMode] = useState("login"); // login | register
-  const [email, setEmail] = useState("test@example.com");
-  const [password, setPassword] = useState("password123");
-  const [displayName, setDisplayName] = useState("Test");
   const [me, setMe] = useState(null);
   const [error, setError] = useState("");
 
@@ -124,48 +121,7 @@ export default function App() {
   }
 
   if (!me) {
-    return (
-      <div style={{ padding: 20, maxWidth: 420 }}>
-        <h2>Crafting-Commerce</h2>
-
-        <div style={{ marginBottom: 12 }}>
-          <button
-            onClick={() => setAuthMode("login")}
-            disabled={authMode === "login"}
-          >
-            Login
-          </button>{" "}
-          <button
-            onClick={() => setAuthMode("register")}
-            disabled={authMode === "register"}
-          >
-            Register
-          </button>
-        </div>
-
-        <form onSubmit={handleAuth} style={{ display: "grid", gap: 10 }}>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          {authMode === "register" && (
-            <input
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-            />
-          )}
-
-          <button type="submit">
-            {authMode === "login" ? "Login" : "Create Account"}
-          </button>
-
-          {error && <div style={{ color: "crimson" }}>{error}</div>}
-        </form>
-      </div>
-    );
+    return <AuthPage onAuthSuccess={loadAll} />;
   }
 
   return (
