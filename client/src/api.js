@@ -12,6 +12,8 @@ export function clearToken() {
   localStorage.removeItem("token");
 }
 
+const BASE_URL = import.meta.env.VITE_API_URL || "";
+
 async function request(path, options = {}) {
   const token = getToken();
 
@@ -30,7 +32,11 @@ async function request(path, options = {}) {
 
   let res;
   try {
-    res = await fetch(path, { ...options, headers, signal: controller.signal });
+    res = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    });
   } finally {
     clearTimeout(timeoutId);
   }
