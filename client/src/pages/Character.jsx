@@ -1,18 +1,8 @@
-import { useEffect, useState } from "react";
-import { api } from "../api";
+// client/src/pages/Character.jsx
+import React from "react";
+import NavBar from "../components/rpg/NavBar";
 
-export default function Character({ me }) {
-  const [materials, setMaterials] = useState([]);
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    async function load() {
-      setMaterials(await api.materials());
-      setItems(await api.items());
-    }
-    load();
-  }, []);
-
+export default function Character({ me, materials = [], items = [] }) {
   const totalMaterials = materials.reduce(
     (sum, m) => sum + (m.quantity || 0),
     0,
@@ -21,37 +11,75 @@ export default function Character({ me }) {
   const totalItems = items.reduce((sum, i) => sum + (i.quantity || 0), 0);
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Character</h2>
+    <div className="min-h-screen bg-[#0a0a14]">
+      <NavBar
+        currentPage="Character"
+        gold={me?.player?.coins ?? 0}
+        name={me?.user?.display_name ?? "Player"}
+      />
 
-      <div style={card}>
-        <h3>{me?.user?.display_name}</h3>
-        <p>
-          <strong>Coins:</strong> {me?.player?.coins}
-        </p>
-        <p>
-          <strong>Total Materials:</strong> {totalMaterials}
-        </p>
-        <p>
-          <strong>Total Items:</strong> {totalItems}
-        </p>
-      </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-100 mb-2">
+            Player Profile
+          </h1>
+          <p className="text-sm text-slate-500"></p>
+        </div>
 
-      <div style={card}>
-        <h4>Stats (Coming Soon)</h4>
-        <p>Level: 1</p>
-        <p>Experience: 0 / 100</p>
-        <p>Crafted Items: TBD</p>
-        <p>Gathered Resources: TBD</p>
+        {/* Character Card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Identity */}
+          <div className="rounded-2xl border border-slate-800/60 bg-slate-900/50 p-6 shadow-lg">
+            <h2 className="text-lg font-bold text-amber-400 mb-4 uppercase tracking-wider">
+              Identity
+            </h2>
+
+            <div className="space-y-3 text-sm text-slate-300">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Name</span>
+                <span className="font-semibold">{me?.user?.display_name}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-slate-500">Gold</span>
+                <span className="font-semibold text-amber-300">
+                  {me?.player?.coins?.toLocaleString()}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="rounded-2xl border border-slate-800/60 bg-slate-900/50 p-6 shadow-lg">
+            <h2 className="text-lg font-bold text-amber-400 mb-4 uppercase tracking-wider">
+              Inventory Stats
+            </h2>
+
+            <div className="space-y-3 text-sm text-slate-300">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Total Materials</span>
+                <span className="font-semibold">{totalMaterials}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-slate-500">Total Crafted Items</span>
+                <span className="font-semibold">{totalItems}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Future Expansion Section */}
+        <div className="mt-10 rounded-2xl border border-amber-800/30 bg-gradient-to-br from-amber-900/10 to-transparent p-6">
+          <h3 className="text-sm font-bold tracking-widest uppercase text-amber-500 mb-2">
+            Coming Soon
+          </h3>
+          <p className="text-xs text-slate-500">
+            Experience points, leveling system, achievements, and guild ranks.
+          </p>
+        </div>
       </div>
     </div>
   );
 }
-
-const card = {
-  background: "#1c1c1c",
-  padding: 20,
-  borderRadius: 10,
-  marginBottom: 20,
-  border: "1px solid #333",
-};
