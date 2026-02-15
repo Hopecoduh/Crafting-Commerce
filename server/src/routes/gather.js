@@ -47,7 +47,7 @@ router.post("/hunt", requireUser, async (req, res) => {
   if (rollChance(10)) addDrop(drops, "Egg", 1);
 
   await applyDropsToPlayer(req.user.userId, drops);
-  res.json({ ok: true, drops });
+  res.json({ ok: true, data: { drops } });
 });
 
 // POST /api/gather/wood
@@ -62,7 +62,7 @@ router.post("/wood", requireUser, async (req, res) => {
   if (rollChance(10)) addDrop(drops, "Plant Matter", 1); // bark/leaves flavor
 
   await applyDropsToPlayer(req.user.userId, drops);
-  res.json({ ok: true, drops });
+  res.json({ ok: true, data: { drops } });
 });
 
 // POST /api/gather/mine
@@ -87,7 +87,7 @@ router.post("/mine", requireUser, async (req, res) => {
   if (rollChance(18)) addDrop(drops, "Flint", 1);
 
   await applyDropsToPlayer(req.user.userId, drops);
-  res.json({ ok: true, drops });
+  res.json({ ok: true, data: { drops } });
 });
 
 // POST /api/gather/plants
@@ -126,7 +126,7 @@ router.post("/plants", requireUser, async (req, res) => {
   }
 
   await applyDropsToPlayer(req.user.userId, drops);
-  res.json({ ok: true, drops });
+  res.json({ ok: true, data: { drops } });
 });
 
 export default router;
