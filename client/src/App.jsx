@@ -125,32 +125,64 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Inventory
-            me={me}
-            materials={materials}
-            items={items}
-            recipes={recipes}
-            onLoot={refreshInventoryOnly}
-            onCraft={async (recipeId) => {
-              try {
-                await api.craft(recipeId);
-                setMaterials(await api.materials());
-                setItems(await api.items());
-              } catch (e) {
-                setError(e.message || "Craft failed");
-                throw e;
-              }
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px 20px",
+          background: "#1c1c1c",
+          color: "white",
+          borderBottom: "1px solid #333",
+        }}
+      >
+        <div>Crafting-Commerce</div>
+
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <div>{me?.user?.display_name}</div>
+          <button
+            onClick={logout}
+            style={{
+              background: "#333",
+              border: "1px solid #444",
+              color: "white",
+              padding: "6px 12px",
+              cursor: "pointer",
             }}
-          />
-        }
-      />
-      <Route path="/npc-shops" element={<ShopGrid me={me} />} />
-      <Route path="/npc-shops/:id" element={<ShopDetail />} />
-      <Route path="*" element={<div>Route not found</div>} />
-    </Routes>
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Inventory
+              me={me}
+              materials={materials}
+              items={items}
+              recipes={recipes}
+              onLoot={refreshInventoryOnly}
+              onCraft={async (recipeId) => {
+                try {
+                  await api.craft(recipeId);
+                  setMaterials(await api.materials());
+                  setItems(await api.items());
+                } catch (e) {
+                  setError(e.message || "Craft failed");
+                  throw e;
+                }
+              }}
+            />
+          }
+        />
+        <Route path="/npc-shops" element={<ShopGrid me={me} />} />
+        <Route path="/npc-shops/:id" element={<ShopDetail />} />
+        <Route path="*" element={<div>Route not found</div>} />
+      </Routes>
+    </>
   );
 }
