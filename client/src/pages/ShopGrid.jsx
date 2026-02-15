@@ -4,7 +4,7 @@ import NavBar from "../components/rpg/NavBar";
 import ShopCard from "../components/rpg/ShopCard";
 import { Search, SlidersHorizontal } from "lucide-react";
 
-export default function ShopGrid({ me }) {
+export default function ShopGrid({ me, logout }) {
   const [search, setSearch] = React.useState("");
   const [filterTier, setFilterTier] = React.useState("All");
 
@@ -58,6 +58,7 @@ export default function ShopGrid({ me }) {
         currentPage="ShopGrid"
         gold={me?.player?.coins ?? 0}
         name={me?.user?.display_name ?? "Player"}
+        onLogout={logout}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">

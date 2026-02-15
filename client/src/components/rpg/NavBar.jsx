@@ -2,7 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Coins, Shield, Swords, Package } from "lucide-react";
 
-export default function NavBar({ currentPage, gold = 0, name = "Player" }) {
+export default function NavBar({
+  currentPage,
+  gold = 0,
+  name = "Player",
+  onLogout,
+}) {
   return (
     <nav className="sticky top-0 z-50 border-b border-amber-900/30 bg-[#0d0d1a]/95 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -62,11 +67,24 @@ export default function NavBar({ currentPage, gold = 0, name = "Player" }) {
 
             <div className="hidden sm:flex items-center gap-3">
               <div className="text-right">
-                <p className="text-xs font-semibold text-slate-200">{name}</p>
+                <Link
+                  to="/character"
+                  className="text-xs font-semibold text-slate-200 hover:text-amber-400 transition-colors"
+                >
+                  {name}
+                </Link>
               </div>
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-amber-700/40 flex items-center justify-center">
                 <span className="text-amber-400 text-xs font-bold">A</span>
               </div>
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  className="text-[10px] uppercase tracking-wider text-slate-500 hover:text-red-400 transition-colors"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>

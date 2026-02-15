@@ -9,6 +9,7 @@ import { RECIPE_CATEGORIES } from "../data/recipeCategories";
 
 export default function Inventory({
   me,
+  logout,
   materials = [],
   items = [],
   recipes = [],
@@ -39,6 +40,7 @@ export default function Inventory({
         currentPage="Inventory"
         gold={me?.player?.coins ?? 0}
         name={me?.user?.display_name ?? "Player"}
+        onLogout={logout}
       />
 
       <div className="max-w-7xl mx-auto px-6 py-10">
