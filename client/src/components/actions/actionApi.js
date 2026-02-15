@@ -10,9 +10,11 @@ export async function postAction(url, body) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-store",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
+    cache: "no-store",
   });
 
   const text = await res.text().catch(() => "");

@@ -20,6 +20,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 app.get("/boom", (req, res) => {
   throw new Error("test error handler");
 });
