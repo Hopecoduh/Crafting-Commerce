@@ -15,6 +15,7 @@ import shopRouter from "./routes/shop.js";
 import gatherRouter from "./routes/gather.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import npcShopsRouter from "./routes/npcShops.js";
+import actionsRouter from "./routes/actions.js";
 
 const app = express();
 app.use(cors());
@@ -36,6 +37,8 @@ app.use("/api/shop", shopRouter);
 app.use("/api/npc-shops", npcShopsRouter);
 
 app.use("/api/gather", gatherRouter);
+
+app.use("/api/actions", actionsRouter);
 
 app.use(errorHandler);
 
