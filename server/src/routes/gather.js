@@ -46,7 +46,21 @@ router.post("/hunt", requireUser, async (req, res) => {
   if (rollChance(8)) addDrop(drops, "Wool", 1);
   if (rollChance(10)) addDrop(drops, "Egg", 1);
 
-  await applyDropsToPlayer(req.user.userId, drops);
+  const playerRes = await db.query(
+    `SELECT id FROM players WHERE user_id = $1`,
+    [req.user.userId],
+  );
+
+  const playerId = playerRes.rows[0]?.id;
+
+  if (!playerId) {
+    return res.status(400).json({
+      ok: false,
+      error: "Player record not found",
+    });
+  }
+
+  await applyDropsToPlayer(playerId, drops);
   res.json({ ok: true, data: { drops } });
 });
 
@@ -61,7 +75,21 @@ router.post("/wood", requireUser, async (req, res) => {
   if (rollChance(35)) addDrop(drops, "Stick", randInt(1, 3));
   if (rollChance(10)) addDrop(drops, "Plant Matter", 1); // bark/leaves flavor
 
-  await applyDropsToPlayer(req.user.userId, drops);
+  const playerRes = await db.query(
+    `SELECT id FROM players WHERE user_id = $1`,
+    [req.user.userId],
+  );
+
+  const playerId = playerRes.rows[0]?.id;
+
+  if (!playerId) {
+    return res.status(400).json({
+      ok: false,
+      error: "Player record not found",
+    });
+  }
+
+  await applyDropsToPlayer(playerId, drops);
   res.json({ ok: true, data: { drops } });
 });
 
@@ -86,7 +114,21 @@ router.post("/mine", requireUser, async (req, res) => {
   // flint bonus
   if (rollChance(18)) addDrop(drops, "Flint", 1);
 
-  await applyDropsToPlayer(req.user.userId, drops);
+  const playerRes = await db.query(
+    `SELECT id FROM players WHERE user_id = $1`,
+    [req.user.userId],
+  );
+
+  const playerId = playerRes.rows[0]?.id;
+
+  if (!playerId) {
+    return res.status(400).json({
+      ok: false,
+      error: "Player record not found",
+    });
+  }
+
+  await applyDropsToPlayer(playerId, drops);
   res.json({ ok: true, data: { drops } });
 });
 
@@ -125,7 +167,21 @@ router.post("/plants", requireUser, async (req, res) => {
     addDrop(drops, plant2.name, plant2.qty);
   }
 
-  await applyDropsToPlayer(req.user.userId, drops);
+  const playerRes = await db.query(
+    `SELECT id FROM players WHERE user_id = $1`,
+    [req.user.userId],
+  );
+
+  const playerId = playerRes.rows[0]?.id;
+
+  if (!playerId) {
+    return res.status(400).json({
+      ok: false,
+      error: "Player record not found",
+    });
+  }
+
+  await applyDropsToPlayer(playerId, drops);
   res.json({ ok: true, data: { drops } });
 });
 
