@@ -152,7 +152,7 @@ export default function App() {
       />
       <Route path="/character" element={<Character me={me} />} />
       <Route path="/npc-shops" element={<ShopGrid me={me} logout={logout} />} />
-      <Route path="/npc-shops/:id" element={<ShopDetail />} />
+      <Route path="/npc-shops/:id" element={<ShopDetail me={me} />} />
       <Route path="*" element={<div>Route not found</div>} />
     </Routes>
   );
