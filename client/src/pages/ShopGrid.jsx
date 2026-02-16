@@ -10,7 +10,7 @@ export default function ShopGrid({ me, logout }) {
 
   const tiers = ["All", "Common", "Rare", "Legendary"];
 
-  // ✅ shops state must come BEFORE filteredShops
+  // shops state must come BEFORE filteredShops
   const [shops, setShops] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
@@ -37,7 +37,7 @@ export default function ShopGrid({ me, logout }) {
     };
   }, []);
 
-  // ✅ filteredShops must come AFTER shops is declared
+  // filteredShops must come AFTER shops is declared
   const filteredShops = shops.filter((shop) => {
     const name = shop.name || "";
     const description = shop.description || "";
