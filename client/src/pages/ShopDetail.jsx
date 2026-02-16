@@ -6,7 +6,7 @@ import TabSwitcher from "../components/rpg/TabSwitcher";
 import ItemRow from "../components/rpg/ItemRow";
 import { ArrowLeft, MapPin, Star, User, Package } from "lucide-react";
 
-export default function ShopDetail({ me }) {
+export default function ShopDetail() {
   const { id } = useParams();
   const shopId = Number(id);
 
@@ -43,7 +43,7 @@ export default function ShopDetail({ me }) {
       }
     }
 
-    if (Number.isFinite(shopId) && me) load();
+    if (Number.isFinite(shopId)) load();
 
     return () => {
       alive = false;
