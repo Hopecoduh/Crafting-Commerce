@@ -40,9 +40,8 @@ export default function App() {
       setRecipes(await api.recipes());
       setItems(await api.items());
       setMyListings(await api.myListings());
-    } catch (e) {
-  console.error(e);
-}
+    } catch {
+      console.error(e);
     }
   }
 
