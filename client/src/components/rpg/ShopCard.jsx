@@ -24,7 +24,6 @@ export default function ShopCard({ shop }) {
       {/* Image area */}
       <div className="relative h-44 overflow-hidden">
         <img
-          src={shop.image || "https://via.placeholder.com/600x400"}
           alt={shop.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />

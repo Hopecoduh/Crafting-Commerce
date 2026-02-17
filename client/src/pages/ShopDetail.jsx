@@ -23,18 +23,25 @@ export default function ShopDetail({ me }) {
     async function load() {
       try {
         setLoading(true);
+        setError("");
 
         const shops = await api.npcShops();
-        const foundShop = shops.find((s) => Number(s.id) === shopId);
+        const foundShop = Array.isArray(shops)
+          ? shops.find((s) => Number(s.id) === shopId)
+          : null;
 
-        const stock = await api.npcShopStock(shopId);
+        const stockResponse = await api.npcShopStock(shopId);
         const player = await api.items();
 
         if (!alive) return;
 
-        setShop(foundShop || null);
-        setShopItems(stock || []);
-        setPlayerItems(player || []);
+        setShop(stockResponse?.shop || foundShop || null);
+
+        setShopItems(
+          Array.isArray(stockResponse?.stock) ? stockResponse.stock : [],
+        );
+
+        setPlayerItems(Array.isArray(player) ? player : []);
       } catch (e) {
         if (!alive) return;
         setError(e.message || "Failed to load shop");
@@ -43,12 +50,14 @@ export default function ShopDetail({ me }) {
       }
     }
 
-    if (Number.isFinite(shopId) && me) load();
+    if (Number.isFinite(shopId) && me) {
+      load();
+    }
 
     return () => {
       alive = false;
     };
-  }, [shopId]);
+  }, [shopId, me]);
 
   const currentItems = activeTab === "buy" ? shopItems : playerItems;
 

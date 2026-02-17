@@ -121,31 +121,6 @@ export const api = {
     }),
 
   // Shop
-  listings: () => request("/api/shop/listings"),
-  myListings: () => request("/api/shop/my-listings"),
-
-  listItem: (body) =>
-    request("/api/shop/list", {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
-
-  buy: (listingId) =>
-    request(`/api/shop/buy/${listingId}`, {
-      method: "POST",
-    }),
-
-  updateListingPrice: (listingId, price) =>
-    request(`/api/shop/my-listings/${listingId}`, {
-      method: "PATCH",
-      body: JSON.stringify({ price }),
-    }),
-
-  unlist: (listingId) =>
-    request(`/api/shop/unlist/${listingId}`, {
-      method: "POST",
-    }),
-
   npcShops: async () => {
     return request("/api/npc-shops");
   },

@@ -11,7 +11,6 @@ import { db } from "./db/client.js";
 import authRouter from "./routes/auth.js";
 import inventoryRouter from "./routes/inventory.js";
 import craftingRouter from "./routes/crafting.js";
-import shopRouter from "./routes/shop.js";
 import gatherRouter from "./routes/gather.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import npcShopsRouter from "./routes/npcShops.js";
@@ -33,7 +32,6 @@ app.get("/boom", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/inventory", inventoryRouter);
 app.use("/api/crafting", craftingRouter);
-app.use("/api/shop", shopRouter);
 app.use("/api/npc-shops", npcShopsRouter);
 
 app.use("/api/gather", gatherRouter);
