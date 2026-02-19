@@ -46,20 +46,16 @@ export default function ShopDetail({ me }) {
       setShopItems(normalizedStock);
 
       // PLAYER ITEMS (sell tab)
-      const normalizedPlayer = Array.isArray(playerInventory)
-        ? playerInventory
+      const normalizedPlayer = Array.isArray(player)
+        ? player
             .filter((i) => Number(i.quantity) > 0)
-            .map((i) => {
-              // check if shop buys this item
-              const shopMatch = normalizedStock.find((s) => s.item_id === i.id);
-
-              return {
-                item_id: i.id,
-                item_name: i.name,
-                quantity: Number(i.quantity),
-                sell_price: shopMatch?.sell_price ?? null, // null means shop won't buy it
-              };
-            })
+            .map((i) => ({
+              id: i.id,
+              item_id: i.id,
+              name: i.name,
+              sellPrice: Number(i.base_price) || 0,
+              stock: Number(i.quantity),
+            }))
         : [];
 
       setPlayerItems(normalizedPlayer);
