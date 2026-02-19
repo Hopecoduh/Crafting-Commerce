@@ -56,8 +56,9 @@ router.get("/items", requireUser, async (req, res, next) => {
     const result = await db.query(
       `
       SELECT 
-        i.id, 
-        i.name, 
+        i.id,
+        i.name,
+        i.base_price, 
         COALESCE(pi.quantity, 0) AS quantity
       FROM items i
       LEFT JOIN player_items pi
