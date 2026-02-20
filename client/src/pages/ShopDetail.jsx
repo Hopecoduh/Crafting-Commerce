@@ -6,7 +6,7 @@ import TabSwitcher from "../components/rpg/TabSwitcher";
 import ItemRow from "../components/rpg/ItemRow";
 import { ArrowLeft, MapPin, Star, Package } from "lucide-react";
 
-export default function ShopDetail({ me }) {
+export default function ShopDetail() {
   const { id } = useParams();
   const shopId = Number(id);
 
@@ -67,10 +67,10 @@ export default function ShopDetail({ me }) {
   }
 
   useEffect(() => {
-    if (Number.isFinite(shopId) && me) {
+    if (Number.isFinite(shopId)) {
       loadShop();
     }
-  }, [shopId, me]);
+  }, [shopId]);
 
   // BUY
   async function handleBuy(itemId, qty) {
