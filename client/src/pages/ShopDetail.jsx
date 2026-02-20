@@ -46,15 +46,14 @@ export default function ShopDetail() {
       setShopItems(normalizedStock);
 
       // PLAYER ITEMS (sell tab)
-      const normalizedPlayer = Array.isArray(player)
-        ? player
+      const normalizedPlayer = Array.isArray(playerInventory)
+        ? playerInventory
             .filter((i) => Number(i.quantity) > 0)
             .map((i) => ({
-              id: i.id,
               item_id: i.id,
-              name: i.name,
-              sellPrice: Number(i.base_price) || 0,
-              stock: Number(i.quantity),
+              item_name: i.name,
+              sell_price: Number(i.base_price) || 0,
+              quantity: Number(i.quantity),
             }))
         : [];
 
