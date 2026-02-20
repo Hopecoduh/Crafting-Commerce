@@ -1,15 +1,13 @@
 // client/src/App.jsx
 import { useEffect, useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { api, setToken, clearToken, getToken } from "./api";
+
 import ShopGrid from "./pages/ShopGrid";
 import ShopDetail from "./pages/ShopDetail";
 import Inventory from "./pages/Inventory";
 import AuthPage from "./pages/AuthPage";
 import Character from "./pages/Character";
-
-import ActionBar from "./components/actions/ActionBar";
-import CraftingBar from "./components/crafting/CraftingBar";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -20,15 +18,7 @@ export default function App() {
   const [recipes, setRecipes] = useState([]);
   const [items, setItems] = useState([]);
 
-  // Player shop
-  const [myListings, setMyListings] = useState([]);
-  const [stockInputs, setStockInputs] = useState({});
-  const [listingEdits, setListingEdits] = useState({});
-  const [busy, setBusy] = useState({});
-
-  function setBusyKey(key, val) {
-    setBusy((p) => ({ ...p, [key]: val }));
-  }
+  // ---------------- LOAD ALL ----------------
 
   async function loadAll() {
     setError("");
@@ -36,76 +26,53 @@ export default function App() {
       const meRes = await api.me();
       setMe(meRes);
 
-      setMaterials(await api.materials());
-      setRecipes(await api.recipes());
-      setItems(await api.items());
-      setMyListings(await api.myListings());
+      const [materialsRes, recipesRes, itemsRes] = await Promise.all([
+        api.materials(),
+        api.recipes(),
+        api.items(),
+      ]);
+
+      setMaterials(materialsRes);
+      setRecipes(recipesRes);
+      setItems(itemsRes);
     } catch (e) {
       console.error(e);
       setError(e.message || "Failed to load data");
+      clearToken();
+      setMe(null);
     }
   }
 
+  // ---------------- INITIAL LOAD ----------------
+
+  useEffect(() => {
+    async function init() {
+      if (getToken()) {
+        await loadAll();
+      }
+      setLoading(false);
+    }
+
+    init();
+  }, []);
+
+  // ---------------- INVENTORY REFRESH ----------------
+
   async function refreshInventoryOnly() {
     try {
-      setMaterials(await api.materials());
-      setItems(await api.items());
+      const [materialsRes, itemsRes] = await Promise.all([
+        api.materials(),
+        api.items(),
+      ]);
+
+      setMaterials(materialsRes);
+      setItems(itemsRes);
     } catch (e) {
       setError(e.message || "Failed to refresh inventory");
     }
   }
 
-  useEffect(() => {
-    setLoading(false);
-    if (getToken()) loadAll();
-  }, []);
-
-  async function handleAuth(e) {
-    e.preventDefault();
-    setError("");
-
-    try {
-      const res =
-        authMode === "login"
-          ? await api.login({ email, password })
-          : await api.register({
-              email,
-              password,
-              display_name: displayName,
-            });
-
-      setToken(res.token);
-      await loadAll();
-    } catch (e) {
-      setError(e.message);
-    }
-  }
-
-  async function stockStore(item) {
-    setError("");
-
-    const qty = stockInputs[item.id]?.qty ?? 1;
-    const price = stockInputs[item.id]?.price ?? 10;
-
-    try {
-      await api.listItem({
-        item_id: item.id,
-        quantity: qty,
-        price,
-      });
-
-      setItems(await api.items());
-      setMyListings(await api.myListings());
-
-      setStockInputs((prev) => {
-        const copy = { ...prev };
-        delete copy[item.id];
-        return copy;
-      });
-    } catch (e) {
-      setError(e.message);
-    }
-  }
+  // ---------------- LOGOUT ----------------
 
   function logout() {
     clearToken();
@@ -113,7 +80,6 @@ export default function App() {
     setMaterials([]);
     setRecipes([]);
     setItems([]);
-    setMyListings([]);
   }
 
   // ---------------- UI ----------------
@@ -141,8 +107,7 @@ export default function App() {
             onCraft={async (recipeId) => {
               try {
                 await api.craft(recipeId);
-                setMaterials(await api.materials());
-                setItems(await api.items());
+                await refreshInventoryOnly();
               } catch (e) {
                 setError(e.message || "Craft failed");
                 throw e;
@@ -151,9 +116,13 @@ export default function App() {
           />
         }
       />
+
       <Route path="/character" element={<Character me={me} />} />
+
       <Route path="/npc-shops" element={<ShopGrid me={me} logout={logout} />} />
+
       <Route path="/npc-shops/:id" element={<ShopDetail />} />
+
       <Route path="*" element={<div>Route not found</div>} />
     </Routes>
   );
